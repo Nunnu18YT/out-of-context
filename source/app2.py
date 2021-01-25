@@ -181,7 +181,7 @@ def review(vId, cCount: int = 10):
             print(f'{data[vId]["vFile"][:-4]}_____{cId[0]}.mkv created.')
             afterTimestamp = re.search(
                 r'^.{60,80}</a>(.+)', data[vId]["cMatched"][cId[0]]["cText"])
-            afterAfterTimestamp = re.sub(r'[^a-zA-Z\d]+', afterTimestamp)
+            afterAfterTimestamp = re.sub(r'[^a-zA-Z\d]+', '_', afterTimestamp.group(1))
             print(
                 f'{data[vId]["cMatched"][cId[0]]["cTimestamp"]} || {afterAfterTimestamp} || {data[vId]["cMatched"][cId[0]]["cLikeCount"]}')
             while (qAssurance == "no"):
@@ -221,6 +221,8 @@ def review(vId, cCount: int = 10):
             print(f'{cId[0]} clip already exists. Continuing...')
             continue
 
+    data[vId]["vReviewed"] = True
+
     with open(DB, 'w') as db_write:
         json.dump(data, db_write)
 
@@ -249,7 +251,7 @@ def multiple_review(vCount, cCount):
 def main():
     searchThis = input("Search what? ")
     if searchThis != '':
-        get_search(searchThis, DB, 2)  # 100pts
+        get_search(searchThis, DB, 4)  # 100pts
     else:
         pass
 
